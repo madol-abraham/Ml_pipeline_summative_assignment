@@ -44,18 +44,34 @@ The model takes the following environmental and soil conditions as input:
 
 # File Structure
 
-
 Ml_pipeline_summative_assignment/
-├── README.md          # Documentation
-├── notebook/          # Jupyter Notebooks for initial experiments
-│   └── ml_pipleline_summative.ipynb
-├── src/               # Source code for the project
-│   ├── preprocessing.py  # Image preprocessing utilities
-│   ├── model.py          # ML model definition and training logic
-│   └── prediction.py     # Model inference and prediction
-├── data/              
-│   ├── test/           
-│   └── train/      
-├── models/           
+│── README.md
+│── requirements.txt
+│── Dockerfile
+│── app.py
+│── model.py
+│── prediction.py
+│── preprocessing.py
+│── retrain.py
+│── data/
+│   ├── train_data.csv
+│   ├── test_data.csv
+│── models/
 │   ├── cool_model.h5
+│── notebook/
+│   ├── ml_summative.ipynb
+│── static/
+│   ├── css/
+│   │   ├── style.css
+│   ├── images/
+│   ├── js/
+│   │   ├── upload.js
+│── templates/
+│   ├── base.html
+│   ├── predict.html
+│   ├── retrain.html
+│   ├── result.html
+│   ├── analytics.html
+│   ├── home.html
+│   ├── error.html
 
