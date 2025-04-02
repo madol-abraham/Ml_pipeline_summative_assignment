@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h2>Irrigation Prediction Result</h2>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">Irrigation Needed: <span class="badge bg-{% if prediction == 'Yes' %}danger{% else %}success{% endif %}">{{ prediction }}</span></h3>
+                <p class="card-text">Confidence: {{ confidence * 100 }}%</p>
+                
+                <hr>
+                <h4>Input Data:</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">Soil Moisture: {{ input_data.Soil_Moisture }}%</li>
+                    <li class="list-group-item">Temperature: {{ input_data.temperature }}°C</li>
+                    <li class="list-group-item">Time: {{ input_data.Time }}</li>
+                    <li class="list-group-item">Wind Speed: {{ input_data.Wind_speed_km_h }} km/h</li>
+                    <li class="list-group-item">Air Humidity: {{ input_data.Air_humidity_percent }}%</li>
+                    <li class="list-group-item">Rainfall: {{ input_data.rainfall }} mm</li>
+                    <li class="list-group-item">Soil Type: {{ ['Sandy', 'Loamy', 'Clay', 'Silt'][input_data.Soil_Type-1] }}</li>
+                    <li class="list-group-item">Crop Type: {{ ['Wheat', 'Corn', 'Rice', 'Soybean'][input_data.Crop_Type-1] }}</li>
+                </ul>
+                
+                <div class="mt-4">
+                    <a href="/predict" class="btn btn-primary">Make Another Prediction</a>
+                    <a href="/" class="btn btn-secondary">Return Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

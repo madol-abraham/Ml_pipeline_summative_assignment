@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="bi bi-calculator me-2"></i>Irrigation Prediction</h3>
+            </div>
+            <div class="card-body">
+                {% if show_result %}
+                <div class="alert alert-{% if prediction %}danger{% else %}success{% endif %} mb-4">
+                    <h4 class="alert-heading">
+                        Irrigation Needed: {% if prediction %}YES{% else %}NO{% endif %}
+                    </h4>
+                    <!--<p class="mb-0">Confidence: {{ (confidence * 100)|round(2) }}%</p>-->
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Input Parameters</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr><th>Soil Moisture</th><td>{{ input_data.Soil_Moisture }}%</td></tr>
+                                <tr><th>Temperature</th><td>{{ input_data.temperature }}°C</td></tr>
+                                <tr><th>Wind Speed</th><td>{{ input_data.Wind_speed_km_h }} km/h</td></tr>
+                                <tr><th>Humidity</th><td>{{ input_data.Air_humidity_percent }}%</td></tr>
+                                <tr><th>Rainfall</th><td>{{ input_data.rainfall }} mm</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <a href="/predict" class="btn btn-primary">
+                    <i class="bi bi-arrow-left me-1"></i>Make Another Prediction
+                </a>
+                {% else %}
+                <form method="POST" class="needs-validation" novalidate>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="Soil_Moisture" class="form-label">Soil Moisture (%)</label>
+                            <input type="number" step="0.01" class="form-control" id="Soil_Moisture" name="Soil_Moisture" required>
+                            <div class="invalid-feedback">Please enter soil moisture.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="temperature" class="form-label">Temperature (°C)</label>
+                            <input type="number" step="0.01" class="form-control" id="temperature" name="temperature" required>
+                            <div class="invalid-feedback">Please enter temperature.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Time" class="form-label">Time (24h format)</label>
+                            <input type="number" step="0.01" class="form-control" id="Time" name="Time" required>
+                            <div class="invalid-feedback">Please enter time.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Wind_speed_km_h" class="form-label">Wind Speed (km/h)</label>
+                            <input type="number" step="0.01" class="form-control" id="Wind_speed_km_h" name="Wind_speed_km_h" required>
+                            <div class="invalid-feedback">Please enter wind speed.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Air_humidity_percent" class="form-label">Air Humidity (%)</label>
+                            <input type="number" step="0.01" class="form-control" id="Air_humidity_percent" name="Air_humidity_percent" required>
+                            <div class="invalid-feedback">Please enter humidity.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="rainfall" class="form-label">Rainfall (mm)</label>
+                            <input type="number" step="0.01" class="form-control" id="rainfall" name="rainfall" required>
+                            <div class="invalid-feedback">Please enter rainfall.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Soil_Type" class="form-label">Soil Type</label>
+                            <select class="form-select" id="Soil_Type" name="Soil_Type" required>
+                                <option value="" selected disabled>Select soil type</option>
+                                <option value="1">Sandy</option>
+                                <option value="2">Loamy</option>
+                                <option value="3">Clay</option>
+                                <option value="4">Silt</option>
+                            </select>
+                            <div class="invalid-feedback">Please select soil type.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Crop_Type" class="form-label">Crop Type</label>
+                            <select class="form-select" id="Crop_Type" name="Crop_Type" required>
+                                <option value="" selected disabled>Select crop type</option>
+                                <option value="1">Wheat</option>
+                                <option value="2">Corn</option>
+                                <option value="3">Rice</option>
+                                <option value="4">Soybean</option>
+                            </select>
+                            <div class="invalid-feedback">Please select crop type.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-calculator me-1"></i>Predict Irrigation Need
+                        </button>
+                    </div>
+                </form>
+                
+                {% if error %}
+                <div class="alert alert-danger mt-3">{{ error }}</div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Form validation
+(() => {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
+{% endblock %}

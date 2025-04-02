@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 800px;">
+    <div class="card shadow" style="border: none; border-radius: 15px; overflow: hidden;">
+        <div class="card-header text-white" style="background: linear-gradient(135deg, green 0%, green 100%); border-bottom: none;">
+            <h3 style="font-weight: 600; letter-spacing: 0.5px;"><i class="bi bi-arrow-repeat me-2"></i>Model Retraining Dashboard</h3>
+        </div>
+        <div class="card-body" style="background-color: #f8f9fa;">
+            <form id="retrainForm" method="POST" enctype="multipart/form-data" style="padding: 20px;">
+                <div class="mb-4">
+                    <label for="dataset" class="form-label" style="font-weight: 500; color: #495057;">Upload Training Dataset</label>
+                    <div class="file-upload-wrapper" style="position: relative; overflow: hidden; display: inline-block; width: 100%;">
+                        <input class="form-control" type="file" id="dataset" name="dataset" accept=".csv" required 
+                               style="padding: 12px; border: 2px dashed #ced4da; border-radius: 8px; transition: all 0.3s;">
+                        <div class="form-text" style="margin-top: 8px; color: #6c757d; font-size: 0.85rem;">
+                            Required columns: Soil_Moisture, Temperature, Time, Wind_speed_km_h, 
+                            Air_humidity_percent, Rainfall, Soil_Type, Crop_Type, Irrigation_Needed
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="epochs" class="form-label" style="font-weight: 500; color: #495057;">Training Epochs</label>
+                        <input type="number" class="form-control" id="epochs" name="epochs" value="10" min="1" max="100" required
+                               style="padding: 10px 15px; border-radius: 8px; border: 1px solid #ced4da; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="batch_size" class="form-label" style="font-weight: 500; color: #495057;">Batch Size</label>
+                        <input type="number" class="form-control" id="batch_size" name="batch_size" value="32" min="8" max="256" required
+                               style="padding: 10px 15px; border-radius: 8px; border: 1px solid #ced4da; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-lg w-100" 
+                        style="background: linear-gradient(135deg, green 0%, green 100%); 
+                               border: none; color: white; font-weight: 600; 
+                               padding: 12px; border-radius: 8px; 
+                               box-shadow: 0 4px 6px rgba(255, 152, 0, 0.2);
+                               transition: all 0.3s ease;">
+                    <i class="bi bi-arrow-repeat me-2"></i>Start Retraining Process
+                </button>
+            </form>
+            
+            <div id="trainingProgress" class="mt-4 d-none" style="padding: 0 20px 20px;">
+                <div class="progress mb-3" style="height: 25px; border-radius: 12px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
+                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" style="width: 0%; background-color: #ff9800; font-weight: 500;">0%</div>
+                </div>
+                <div id="trainingLog" class="card" style="border-radius: 10px; border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+                    <div class="card-body" style="height: 200px; overflow-y: auto; background-color: #ffffff; border-radius: 10px; padding: 15px;">
+                        <div style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #333;"></div>
+                    </div>
+                </div>
+                
+                <div id="trainingResult" class="mt-3" style="margin-bottom: 15px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('retrainForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        
+        // Show progress UI
+        const progressSection = document.getElementById('trainingProgress');
+        const progressBar = document.getElementById('progressBar');
+        const logElement = document.getElementById('trainingLog').querySelector('.card-body div');
+        const resultElement = document.getElementById('trainingResult');
+        
+        progressSection.classList.remove('d-none');
+        logElement.innerHTML = '';
+        resultElement.innerHTML = '';
+        
+        // Submit form to /retrain
+        fetch('/retrain', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const { filename, epochs, batch_size } = data;
+                
+                const eventSource = new EventSource(
+                    `/retrain/stream?filename=${filename}&epochs=${epochs}&batch_size=${batch_size}`
+                );
+                
+                eventSource.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    
+                    if (data.progress) {
+                        progressBar.style.width = `${data.progress}%`;
+                        progressBar.textContent = `${data.progress}%`;
+                    }
+                    
+                    if (data.message) {
+                        const timestamp = new Date().toLocaleTimeString();
+                        logElement.innerHTML += `<div><span style="color: #ff9800; font-weight: 500;">${timestamp}:</span> ${data.message}</div>`;
+                        logElement.scrollTop = logElement.scrollHeight;
+                    }
+                    
+                    if (data.status === 'completed') {
+                        eventSource.close();
+                        progressBar.classList.remove('progress-bar-animated');
+                        progressBar.style.background = 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)';
+                        
+                        resultElement.innerHTML = `
+                            <div class="alert alert-success" style="border-radius: 8px; border: none; background-color: #e8f5e9; color: #2E7D32;">
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                <strong>Training Complete!</strong> Model accuracy: ${(data.accuracy * 100).toFixed(2)}%
+                            </div>
+                        `;
+                    }
+                    
+                    if (data.status === 'error') {
+                        eventSource.close();
+                        progressBar.classList.remove('progress-bar-animated');
+                        progressBar.style.background = 'linear-gradient(135deg, #f44336 0%, #c62828 100%)';
+                        
+                        resultElement.innerHTML = `
+                            <div class="alert alert-danger" style="border-radius: 8px; border: none; background-color: #ffebee; color: #c62828;">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <strong>Error:</strong> ${data.message}
+                            </div>
+                        `;
+                    }
+                };
+                
+                eventSource.onerror = () => {
+                    eventSource.close();
+                    logElement.innerHTML += `
+                        <div style="color: #c62828; font-weight: 500;">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            Connection to training stream failed.
+                        </div>
+                    `;
+                };
+            } else {
+                logElement.innerHTML += `
+                    <div style="color: #c62828; font-weight: 500;">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        ${data.message || 'Failed to upload file'}
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            logElement.innerHTML += `
+                <div style="color: #c62828; font-weight: 500;">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Network error: ${error.message}
+                </div>
+            `;
+        });
+    });
+</script>
+{% endblock %}

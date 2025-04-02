@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <style>
+        :root {
+            --bs-primary: #069728;
+            --bs-success: #218838;
+        }
+        .analytics-header {
+            background-color: var(--bs-primary);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 10px 10px;
+        }
+        .visualization-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .visualization-card-header {
+            background-color: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+        }
+        .visualization-card-body {
+            padding: 1.5rem;
+        }
+        .metrics-highlight {
+            font-size: 1.1rem;
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--bs-primary);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .img-container {
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+    </style>
+
+    <!-- Header -->
+    <div class="analytics-header text-center">
+        <h1>Model Training Analytics</h1>
+        <p class="lead">Irrigation Prediction Model Performance</p>
+        <p class="small">Last trained: {{ metrics.last_trained }}</p>
+    </div>
+    
+    <!-- Analytics Content -->
+    <div class="container">
+        <!-- Training Curves Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="visualization-card">
+                    <div class="visualization-card-header">
+                        Training Progress
+                    </div>
+                    <div class="visualization-card-body">
+                        <div class="row">
+                            <!-- Loss Curve -->
+                            <div class="col-md-6">
+                                <div class="img-container">
+                                    <img src="{{ url_for('static', filename='images/loss_curve.png') }}" alt="Training Loss Curve">
+                                </div>
+                                <div class="explanation">
+                                    <h5>Loss Curve</h5>
+                                    <p>The training loss drops sharply in the first few epochs and then gradually stabilizes at a low value, indicating effective model learning.</p>
+                                    <p>The low loss values indicate that the model is learning well without major signs of overfitting.</p>
+                                    {% if metrics.loss_decreased %}
+                                    <p class="text-success">✓ Loss decreased from {{ "%.4f"|format(metrics.initial_loss) }} 
+                                    to {{ "%.4f"|format(metrics.final_loss) }} during training.</p>
+                                    {% else %}
+                                    <p class="text-warning">Loss behavior should be monitored as it didn't decrease significantly.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- Accuracy Curve -->
+                            <div class="col-md-6">
+                                <div class="img-container">
+                                    <img src="{{ url_for('static', filename='images/accuracy_curve.png') }}" alt="Training Accuracy Curve">
+                                </div>
+                                <div class="explanation">
+                                    <h5>Accuracy Curve</h5>
+                                    <p>The training accuracy increases rapidly in the first few epochs and then stabilizes around 97.5%-98%.
+                                        The fluctuations in validation accuracy suggest some variance in generalization performance.</p>
+                                    <p>Final training accuracy: {{ "%.2f"|format(metrics.train_accuracy * 100) }}%</p>
+                                    <p>Final validation accuracy: {{ "%.2f"|format(metrics.val_accuracy * 100) }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Model Evaluation Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="visualization-card">
+                    <div class="visualization-card-header">
+                        Model Evaluation
+                    </div>
+                    <div class="visualization-card-body">
+                        <!-- Confusion Matrix -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="img-container">
+                                    <img src="{{ url_for('static', filename='images/confusion_matrix.png') }}" alt="Confusion Matrix">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="explanation">
+                                    <h5>Confusion Matrix</h5>
+                                    <p>This is a confusion matrix representing the classification performance of my model.
+
+                                        Class 0 (Negative Class):
+                                        
+                                        True Negatives (TN): 15,104 instances were correctly classified as Class 0.
+                                        
+                                        False Positives (FP): 127 instances were incorrectly classified as Class 1.
+                                        
+                                        Class 1 (Positive Class):
+                                        
+                                        False Negatives (FN): 53 instances were incorrectly classified as Class 0.
+                                        
+                                        True Positives (TP): 4,657 instances were correctly classified as Class 1.</p>
+                                     <h6>Interpretation:</h6>
+                                    <p>The model performs well, with a high number of correct classifications (both TN and TP).
+
+                                        The false positive (127) and false negative (53) values are relatively low, indicating strong precision and recall.
+                                        
+                                        The model likely has a high accuracy and F1-score, as misclassification rates are minimal.</p>
+                                
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Metrics Summary -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="metrics-highlight">
+                                    <div class="row text-center">
+                                        <div class="col-md-3">
+                                            <h3>{{ "%.2f"|format(metrics.accuracy * 100) }}%</h3>
+                                            <p class="text-muted">Accuracy</p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <h3>{{ "%.3f"|format(metrics.precision) }}</h3>
+                                            <p class="text-muted">Precision</p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <h3>{{ "%.3f"|format(metrics.recall) }}</h3>
+                                            <p class="text-muted">Recall</p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <h3>{{ "%.3f"|format(metrics.f1_score) }}</h3>
+                                            <p class="text-muted">F1 Score</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="explanation mt-3">
+                                    <h5>Performance Interpretation</h5>
+                                    <p>The model is highly effective, with minimal misclassification errors. It generalizes well, 
+                                        making it suitable for real-world deployment. However, 
+                                        fine-tuning will still be considered in the future to reduce false positives or false negatives further.</p>
+                                    {% if metrics.accuracy > 0.99 %}
+                                    <p class="text-success">✓ The model shows strong overall performance.</p>
+                                    {% else %}
+                                    <p class="text-warning">The model performance could potentially be improved with further tuning.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
