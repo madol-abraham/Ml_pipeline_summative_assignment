@@ -79,13 +79,21 @@ The model takes the following environmental and soil conditions as input:
 
 
   # Installation and Setup
+  
    Prerequisites
+   
    Before installing SmartFlow, ensure you have:
+   
     1.Python 3.8+ – Install from python.org.
+    
     2.Virtual environment setup (venv or conda)
+    
     3. Check if Git is installed:
+    
     # 1. Clone the repository
+    
     ```git clone https://github.com/madol-abraham/Ml_pipeline_summative_assignment.git ```
+    
     # create the virtual environment
     
    
