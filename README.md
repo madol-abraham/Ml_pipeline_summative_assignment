@@ -46,20 +46,22 @@ The model takes the following environmental and soil conditions as input:
 
 <pre> ``` Ml_pipeline_summative_assignment/
   │── README.md
-  │──  requirements.txt
-  │── Dockerfile 
-  │── app.py 
-  │── model.py 
-  │── prediction.py 
-  │── preprocessing.py 
-  │── retrain.py
-  │── data/ 
-  │   ├── train_data.csv │
-      ├── test_data.csv 
-  │── models/
-  │   ├── cool_model.h5
   │── notebook/ 
   │   ├── ml_summative.ipynb 
+  │── Src/ 
+  
+  │    ├── requirements.txt
+  │    ├── Dockerfile 
+  │    ├── app.py 
+  │    ├──model.py 
+  │    ├── prediction.py 
+  │    ├──preprocessing.py 
+  │    ├──retrain.py
+  │── data/ 
+  │   ├── train_data │
+      ├── test_data 
+      │── models/
+  │       ├── cool_model.h5
   │── static/
   │    ├── css/ 
   │    │  ├── style.css 
