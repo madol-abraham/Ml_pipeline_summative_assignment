@@ -36,11 +36,6 @@ Key Features:
 
 *Replace YOUR_VIDEO_ID with your actual YouTube video ID*
 
-## Live Demo
-
-Access the live demo at: [https://your-app-url.herokuapp.com](https://your-app-url.herokuapp.com)
-
-*Replace with your actual deployment URL*
 
 ## Setup Instructions
 
@@ -55,37 +50,33 @@ Follow these steps to set up the project locally:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/smartflow.git
-cd smartflow
+git clone https://github.com/madol-abraham/Ml_pipeline_summative_assignment.git
 
-# project overview
+cd Ml_pipeline_summative_assignment
 
-smartFlow is a machine learning classification model that utilizes a neural network to predict whether irrigation is needed based on various environmental factors.
-The model is designed to assist farmers in optimizing water usage, improving crop yield, and conserving resources.It is an end-to-end solution which features retraining, prediction and visualisation.
+### 2.Set up virtual environment
+python -m venv venv
 
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
 
-# Features
+### 3. Install dependencies
 
-# Binary Classification:  
-Predicts whether irrigation is required (1) or not (0).
+pip install -r requirements.txt
 
-# Neural Network Model: 
-Uses deep learning for accurate predictions.
+### 4. Set up environment variables
 
-# Optimized for Smart Agriculture: 
-Specifically design to  automate irrigation decisions based on real-time inputs.
+Create a .env file in the root directory:
+FLASK_APP=app.py
 
-# Inputs and Features
-The model takes the following environmental and soil conditions as input:
+### 5. Run the application
 
-# Soil moisture
-# Time
-# Air Humidity
-# Wind Speed (Km/h)
-# Soil Type
-# Temperature
-# Crop Type
-# Rainfall
+The application will be available at http://localhost:5000
+
+### Docker Setup
+
+docker build -t Ml_pipeline_summative_assignment .
+docker run -p 5000:5000 Ml_pipeline_summative_assignment
+
 
 # File Structure
 
@@ -123,22 +114,5 @@ The model takes the following environmental and soil conditions as input:
   │   ├── error.html ``` </pre>
 
 
-  # Installation and Setup
-  
-   Prerequisites
-   
-   Before installing SmartFlow, ensure you have:
-   
-    1.Python 3.8+ – Install from python.org.
-    
-    2.Virtual environment setup (venv or conda)
-    
-    3. Check if Git is installed:
-    
-    # 1. Clone the repository
-    
-    ```git clone https://github.com/madol-abraham/Ml_pipeline_summative_assignment.git ```
-    
-    # create the virtual environment
     
    
