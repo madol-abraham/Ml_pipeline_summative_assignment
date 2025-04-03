@@ -49,10 +49,9 @@ Follow these steps to set up the project locally:
 
 ### 1. Clone the repository
 
-```
 git clone https://github.com/madol-abraham/Ml_pipeline_summative_assignment.git
 
-cd Ml_pipeline_summative_assignment ```
+cd Ml_pipeline_summative_assignment 
 
 ### 2.Set up virtual environment
 python -m venv venv
