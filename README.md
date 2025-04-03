@@ -16,7 +16,6 @@
 
 # SmartFlow - Intelligent Irrigation Prediction System
 
-![SmartFlow Logo](static/images/logo.png) <!-- Add your logo if available -->
 
 ## Project Description
 
@@ -32,9 +31,7 @@ Key Features:
 
 ## Demo Video
 
-[![SmartFlow Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
-
-*Replace YOUR_VIDEO_ID with your actual YouTube video ID*
+[Smartflow demo video](https://www.youtube.com/watch?v=aGR_Pc7LURc)
 
 
 ## Setup Instructions
