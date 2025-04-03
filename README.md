@@ -65,6 +65,7 @@ pip install -r requirements.txt
 ### 4. Set up environment variables
 
 Create a .env file in the root directory:
+
 FLASK_APP=app.py
 
 ### 5. Run the application
@@ -74,6 +75,7 @@ The application will be available at http://localhost:5000
 ### Docker Setup
 
 docker build -t Ml_pipeline_summative_assignment .
+
 docker run -p 5000:5000 Ml_pipeline_summative_assignment
 
 
@@ -114,5 +116,56 @@ docker run -p 5000:5000 Ml_pipeline_summative_assignment
   │   ├── error.html ``` </pre>
 
 
-    
+# Usage
+# Making Predictions
+Navigate to the Predict page
+
+Fill in the form with environmental and crop data
+
+Submit to get irrigation prediction
+
+# Retraining the Model
+Navigate to the Retrain page
+
+Upload a CSV file with a customized data
+
+Click "Start Retraining"
+
+Monitor progress on the dashboard
+
+## API Endpoints    
+
+POST /api/predict - you can access it here : http://172.17.0.2:5000/predict/
+
+## Data Format
+For retraining, upload CSV files with the following columns:
+
+Soil_Moisture, temperature, Time,Wind_speed_km_h, Air_humidity_percent, rainfall, Soil_Type, Crop_Type, Irrigation_Needed
+
+### Future improvements
+
+# 1 Enhance model accuracy by :
+
+adding more environmental data, testing advanced algorithms , and automating retraining with data drift detection.
+
+# 2 Improve scalability and usability:
+
+through cloud deployment , mobile app integration, and real-time GIS mapping for farmers.
+
+# 3 Boost reliability and trust with model monitoring; 
+
+explainable AI , and farmer feedback loops to refine predictions over time.
+# 4 Integration of IoTs; 
+
+To automatically trigger irrigation when the sensors detect that they is demand based on the environmental data in realtime.
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request.
+
+## Author
+Madol Abraham Kuol Madol
+
+LinkdIn: [my linkdin](https://www.linkedin.com/in/madol-abraham-kuol-madol/)
+Email: m.madol@alustudent.com
+
    
