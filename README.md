@@ -49,10 +49,10 @@ Follow these steps to set up the project locally:
 
 ### 1. Clone the repository
 
-```bash
+```
 git clone https://github.com/madol-abraham/Ml_pipeline_summative_assignment.git
 
-cd Ml_pipeline_summative_assignment
+cd Ml_pipeline_summative_assignment ```
 
 ### 2.Set up virtual environment
 python -m venv venv
@@ -76,6 +76,7 @@ The application will be available at http://localhost:5000
 
 docker build -t Ml_pipeline_summative_assignment .
 docker run -p 5000:5000 Ml_pipeline_summative_assignment
+
 
 
 # File Structure
