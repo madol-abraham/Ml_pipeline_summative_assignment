@@ -132,7 +132,7 @@ Monitor progress on the dashboard
 
 ## API Endpoints    
 
-POST /api/predict - you can access it here : http://172.17.0.2:5000/predict/
+POST /api/predict - you can access it here : https://smartflow-wzqe.onrender.com/predict
 
 ## Data Format
 For retraining, upload CSV files with the following columns:
