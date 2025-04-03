@@ -14,10 +14,55 @@
 
 
 
+# SmartFlow - Intelligent Irrigation Prediction System
+
+![SmartFlow Logo](static/images/logo.png) <!-- Add your logo if available -->
+
+## Project Description
+
+SmartFlow is a machine learning-powered irrigation prediction system that helps farmers optimize water usage by predicting when crops need irrigation. The system analyzes environmental factors like soil moisture, temperature, humidity, and crop characteristics to make accurate predictions.
+
+Key Features:
+- Machine learning model for irrigation prediction
+- Web interface for single predictions
+- Bulk data upload capability
+- Model retraining functionality
+- Performance analytics dashboard
+- Dockerized deployment
+
+## Demo Video
+
+[![SmartFlow Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+
+*Replace YOUR_VIDEO_ID with your actual YouTube video ID*
+
+## Live Demo
+
+Access the live demo at: [https://your-app-url.herokuapp.com](https://your-app-url.herokuapp.com)
+
+*Replace with your actual deployment URL*
+
+## Setup Instructions
+
+Follow these steps to set up the project locally:
+
+### Prerequisites
+
+- Python 3.8+
+- Docker (optional)
+- Git
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/smartflow.git
+cd smartflow
+
 # project overview
 
 smartFlow is a machine learning classification model that utilizes a neural network to predict whether irrigation is needed based on various environmental factors.
 The model is designed to assist farmers in optimizing water usage, improving crop yield, and conserving resources.It is an end-to-end solution which features retraining, prediction and visualisation.
+
 
 # Features
 
