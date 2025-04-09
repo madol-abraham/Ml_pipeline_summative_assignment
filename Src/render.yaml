@@ -1,11 +1,5 @@
 services:
   - type: web
     name: ml_pipeline
-    runtime: python
-    pythonVersion: "3.11.0"  # Must use Python 3.11 (not 3.12)
-    buildCommand: |
-      apt-get update
-      apt-get install -y gfortran libopenblas-dev  # Required build tools
-      pip install --upgrade pip
-      pip install --prefer-binary -r Src/requirements.txt  # Force wheel usage
-    startCommand: gunicorn Src.app:app
+    runtime: docker
+    dockerfile: Src/Dockerfile  # Path relative to repo root
