@@ -1,10 +1,11 @@
 services:
-  - type: web  # or "worker" if it's a background process
-    name: ml_pipeline
-    runtime: docker
-    dockerfilePath: Dockerfile
-    port: 8000  # adjust to your app's port
+  - type: web
+    name: ml-pipeline
+    runtime: python
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r Src/requirements.txt
+    startCommand: gunicorn Src.app:app
     envVars:
-      - key: PYTHONUNBUFFERED
-        value: 1
-    # Add other environment variables as needed
+      - key: PYTHONPATH
+        value: /opt/render/project/src

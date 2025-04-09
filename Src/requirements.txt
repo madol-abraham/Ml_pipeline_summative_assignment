@@ -1,5 +1,8 @@
-numpy==1.23.5
+# This file is used to specify the dependencies for the project.
+numpy>=1.26.0
+scipy>=1.11.0 
+tensorflow>=2.13.0 
+flask==2.3.2
 pandas
-scikit-learn
-flask
-tensorflow
+gunicorn==20.1.0
+# other dependencies...
