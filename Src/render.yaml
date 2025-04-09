@@ -1,0 +1,10 @@
+services:
+  - type: web  # or "worker" if it's a background process
+    name: ml_pipeline
+    runtime: docker
+    dockerfilePath: Dockerfile
+    port: 8000  # adjust to your app's port
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: 1
+    # Add other environment variables as needed
