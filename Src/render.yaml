@@ -1,11 +1,11 @@
 services:
   - type: web
-    name: ml-pipeline
+    name: ml_pipeline
     runtime: python
+    pythonVersion: "3.12"  # Use Python 3.11 for better compatibility
     buildCommand: |
+      apt-get update
+      apt-get install -y gfortran libopenblas-dev  # Install required build tools
       pip install --upgrade pip
-      pip install -r Src/requirements.txt
+      pip install --prefer-binary -r Src/requirements.txt  # Prefer pre-built wheels
     startCommand: gunicorn Src.app:app
-    envVars:
-      - key: PYTHONPATH
-        value: /opt/render/project/src
