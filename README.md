@@ -33,7 +33,8 @@ Key Features:
 
 [Smartflow demo video](https://www.youtube.com/watch?v=aGR_Pc7LURc)
 
-
+## Here is the hosted public url for my hosted application
+## public url :  [Smartflow](https://ml-pipeline-summative-assignment-1.onrender.com)
 ## Setup Instructions
 
 Follow these steps to set up the project locally:
